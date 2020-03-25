@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+
+
+    <h6 class="border-bottom border-gray pb-2 mb-0">Popular Question</h6>
+
+      {% for question in questions %}
+        {% include 'inc/question.html' %}
+      {% endfor %}
+
+    {% include 'inc/pagination.html' %}
+
+{% endblock content %}
+

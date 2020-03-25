@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+
+
+
+
+    <h6 class="border-bottom border-gray pb-2 mb-0">Tag:<a href="">{{tag}}</a></h6>
+
+      {% for question in questionsTag %}
+        {% include 'inc/question.html' %}
+      {% endfor %}
+      {% include 'inc/pagination.html' %}
+
+{% endblock content %}
+
+
+
+
+

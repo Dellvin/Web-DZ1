@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+        {% include 'inc/question.html' %}
+        <h6 class="pb-2 mb-0" style="margin-top: 100px;">Answers:</h6>
+        {% for answer in answers%}
+            {% include 'inc/answer.html' %}
+
+        {% endfor %}
+
+
+
+
+
+        <div class="mb-3">
+          <label for="email">ADD ANSWER</label>
+          <input type="email" class="form-control" id="email" placeholder="" style="padding-bottom: 300px;">
+          <div class="invalid-feedback">
+            Please enter a valid email address for shipping updates.
+          </div>
+        </div>
+
+
+          <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-top: 20px;">ANSWER</button>
+      </form>
+
+
+{% endblock content %}
+

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<!--insert code here-->
+
+
+<h4 class="mb-3">Registration</h4>
+<form class="needs-validation" novalidate="">
+    <div class="row">
+
+        <label for="firstName">First name</label>
+        <div class="col-md-6 mb-3">
+
+            <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+            <div class="invalid-feedback">
+                Valid first name is required.
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <label for="lastName">Last name</label>
+        <div class="col-md-6 mb-3">
+
+            <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
+            <div class="invalid-feedback">
+                Valid last name is required.
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <label for="username">Username</label>
+        <div class="mb-3">
+
+            <div class="input-group">
+                <div class="input-group" style="left: 17px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">@</span>
+                    </div>
+                    <input type="text" class="form-control" id="username" placeholder="Username" required="">
+                    <div class="invalid-feedback" style="width: 100%;">
+                        Your username is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" style="margin-top: 20px;">
+        <label for="email">Email</label>
+        <div class="mb-3">
+
+            <input type="email" class="form-control" id="email" placeholder="you@example.com" style="margin-left: 52px;">
+            <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <label for="email">Password</label>
+        <div class="mb-3">
+     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" style="margin-bottom: 15px;margin-left: 21px;">
+        </div>
+    </div>
+
+    <img src="/Users/dellvin/Desktop/Снимок экрана 2020-03-06 в 13.08.20.png" height="200" width="200">
+    <input class="uploader-input-file-28-Rz" type="file" accept="image/gif,image/png,image/jpeg,image/pjpeg"
+           multiple="" data-marker="add/input" value="hjgfjhgfcjhgchg">
+
+
+    <button class="btn btn-primary btn-lg btn-block" type="submit" style="margin-top: 20px;">Register</button>
+
+    <!--end of inserting code-->
+</form>
+
+    {% endblock content %}
+
