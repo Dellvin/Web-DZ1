@@ -1,8 +1,16 @@
+# coding=utf-8
 from django.shortcuts import render
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-questions = {
+questionsNum = {
     i: {'id': i, 'title': f'Question #{i}'}
-    for i in range(5)
+    for i in range(25)
+}
+
+QUESTIONS = {
+    '1': {'id': 1, 'title': 'I`m your dream', 'text': 'I`m your dream, make you real'},
+    '2': {'id': 2, 'title': 'I`m your eyes', 'text': 'I`m your eyes when you must steal'},
+    '3': {'id': 3, 'title': 'I`m your pain', 'text': 'I`m your pain when you can`t feel'},
 }
 
 questionsForTag = {
@@ -11,10 +19,20 @@ questionsForTag = {
 }
 
 def main(request):
-    return render(request, 'main_page.html', {
-        'name': 'Ivan',
-        'questions': questions.values(),
-    })
+    contact_list = list(questionsNum.values())
+    paginator = Paginator(contact_list, 5)  # По 2 на страницу
+
+    page = request.GET.get('page')
+    try:
+        questions = paginator.page(page)
+    except PageNotAnInteger:
+        # В случае, GET параметр не число
+        questions = paginator.page(1)
+    except EmptyPage:
+        questions = paginator.page(paginator.num_pages)
+
+    return render(request, 'main_page.html', {'questions': questions})
+
 
 
 def singin(request):
@@ -36,7 +54,7 @@ def tagSearch(request, tag):
     })
 
 def question(request, qid):
-    quest = questions.get(qid)
+    quest = questionsNum.get(qid)
 
     answers = {
         i: {'id': i, 'title': f'Answer #{i}'}

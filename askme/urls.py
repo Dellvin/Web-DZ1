@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.urls import path
+from django.conf.urls import url
 from django.contrib import admin
 
 from app import views
@@ -16,4 +17,5 @@ urlpatterns = [
 
     path('settings/', views.settings, name='settings'),
     path('tagSearch/<str:tag>/', views.tagSearch, name='tagSearch'),
+
 ]
