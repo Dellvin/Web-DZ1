@@ -9,12 +9,12 @@
         <!--insert code here-->
         <br class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
         <a href="">{{ answer.title}}</a>
-        <strong class="d-block text-gray-dark">@username
+        <strong class="d-block text-gray-dark">@{{answer.author}}
 
         </strong>
 
 
-        <img src="./pic.png"
+        <img src="static/pic.png"
              height="100"
              width="100">
 
@@ -25,20 +25,20 @@
     <aside class="col-md-9 blog-sidebar" style="margin-top: 40px;">
 
         <br>
-            lol oru
+            {{answer.text}}
         <br>
     </aside>
 
 
 </div><!-- /.row -->
 <br>
-<div class="like_button_count">506 людям нравится</div>
+<div class="like_button_count">{{answer.rating}} рейтинг ответа</div>
 <a href="https://example.com">ЛАЙК</a>
 <a href="https://example.com" style="margin-left: 35px;">ДИЗЛАЙК</a>
 <a>
     <a style="margin-left: 150px;">
         Tags: </a>
-    <a href="https://example.com">kek</a> <a href="https://example.com">mem</a>
+    <!--<a href="https://example.com">kek</a> <a href="https://example.com">mem</a>-->
 </a>
 
 <br>

@@ -8,23 +8,27 @@
       <div class="p-4">
         <h4 class="font-italic">Popular Tags</h4>
         <ol class="list-unstyled mb-0">
-          <li><a href="#">C</a></li>
-          <li><a href="#">C++</a></li>
-          <li><a href="#">Python</a></li>
-          <li><a href="#">Jango</a></li>
-          <li><a href="#">Java</a></li>
-          <li><a href="#">CSS</a></li>
-          <li><a href="#">HTML5</a></li>
-          <li><a href="#">Linux</a></li>
+          {% for tag in tags%}
+            <li>
+              <a class="badge badge-primary" href="{% url 'tagSearch' tag=tag %}">
+                        {{ tag.title }}
+              </a>
+            </li>
+          {% endfor%}
+
         </ol>
       </div>
 
       <div class="p-4">
         <h4 class="font-italic">Best members</h4>
         <ol class="list-unstyled">
-          <li><a href="#">Dellvin</a></li>
-          <li><a href="#">Kolotushkin</a></li>
-          <li><a href="#">Anderson</a></li>
+          {% for user in users%}
+            <li>
+              <a href="#">
+                        @{{ user.login }}
+              </a>
+            </li>
+          {% endfor%}
         </ol>
       </div>
     </aside><!-- /.blog-sidebar -->

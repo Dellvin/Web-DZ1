@@ -2,19 +2,18 @@
 
 
 <br class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-
 <p>
+<a href="{% url 'question' qid=question.id %}">{{ question.title}}</a>
 <div class="row">
     <div class="col-md-3 blog-main">
-        <!--insert code here-->
+
         <br class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-        <a href="{% url 'question' qid=question.id %}">{{ question.title}}</a>
-        <strong class="d-block text-gray-dark">@username
+        <strong class="d-block text-gray-dark">
+            @{{question.author}}
 
         </strong>
 
-
-        <img src="./pic.png"
+        <img src="../static/pic.png"
              height="100"
              width="100">
 
@@ -25,26 +24,40 @@
     <aside class="col-md-9 blog-sidebar" style="margin-top: 40px;">
 
         <br>
-        Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus
-        commodo,
-        tortor
-        mauris
-        condimentum nibh, ut fermentum massa justo sit amet risus.\n
+        {{question.text}}
         <br>
     </aside>
 
 
 </div><!-- /.row -->
 <br>
-<div class="like_button_count">506 людям нравится</div>
-<a href="https://example.com">ЛАЙК</a>
-<a href="https://example.com" style="margin-left: 40px;">ДИЗЛАЙК</a>
-<a href="{% url 'question' qid=question.id %}" style="margin-left: 150px;">answer(3)</a>
-<a>
-    <a style="margin-left: 150px;">
-        Tags: </a>
-    <a href="{% url 'tagSearch' tag='kek' %}">kek</a> <a href="{% url 'tagSearch' tag='mem' %}">mem</a>
+<div class="like_button_count">{{ question.rating }} рейтинг</div>
+<!--<div class="like_button_count">{{ question.likequestion_set.get.likes }} людям нравится</div>-->
+<!--<div class="like_button_count">{{ question.dislikequestion_set.get.dislikes }} не людям нравится</div>-->
+<a href="#">ЛАЙК</a>
+<a href="#" style="margin-left: 40px;">ДИЗЛАЙК</a>
+<a href="{% url 'question' qid=question.id %}" style="margin-left: 390px;">
+    answer(10)
 </a>
-<!--<a href="{% url 'question' qid=question.id %}">{{ question.title}}</a>-->
+
 <br>
+<a>
+    <a>
+        Tags:
+        {% for tag in question.tags.all %}
+                    <a class="badge badge-primary" href="{% url 'tagSearch' tag=tag %}">
+                        {{ tag.title }}
+                    </a>
+          {% endfor %}
+
+         <!--<a href="{% url 'tagSearch' tag='kek' %}">kek</a>-->
+    </a>
+
+</a>
+
+</br>
+
+<a>Дата публикации: {{question.dateTime}}</a>
 </p>
+<h3 class="border-bottom border-gray pb-2 mb-100">
+</h3>
