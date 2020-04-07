@@ -3,23 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="dc5c9d41-78e8-442c-9efc-aa1340a2e6c8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/inc/answer.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/inc/answer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Templates/inc/question.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/inc/question.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/inc/rightSide.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/inc/rightSide.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/management/commands/SetCommentData.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/management/commands/SetCommentData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/management/commands/SetDislikeQuestionData.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/management/commands/SetDislikeQuestionData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/management/commands/SetUserData.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/management/commands/SetUserData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0002_question_rating.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0003_auto_20200406_2057.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0004_auto_20200406_2130.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0005_auto_20200406_2147.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0006_auto_20200406_2155.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0007_auto_20200406_2231.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/migrations/0008_auto_20200406_2306.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/askme/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/askme/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,12 +53,27 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Templates/inc/question.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="240">
+              <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="18" selection-end-column="25" />
               <folding>
                 <element signature="n#style#0;n#aside#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#2;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Templates/inc/answer.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="284">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+              <folding>
+                <element signature="n#style#0;n#aside#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#a#2;n#!!top" expanded="true" />
+                <marker date="1586280785668" expanded="true" signature="1024:1099" ph="..." />
               </folding>
             </state>
           </provider>
@@ -127,22 +128,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/management/commands/SetLikeCommentData.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" selection-start-line="26" selection-end-line="26" />
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/askme/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="843">
-              <caret line="123" lean-forward="true" selection-start-line="123" selection-end-line="123" />
+            <state relative-caret-position="659">
+              <caret line="126" column="1" lean-forward="true" selection-start-line="126" selection-start-column="1" selection-end-line="126" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -219,7 +208,6 @@
         <option value="$PROJECT_DIR$/app/management/commands/SetLikeQuestionData.py" />
         <option value="$PROJECT_DIR$/askme/urls.py" />
         <option value="$PROJECT_DIR$/Templates/main_page.html" />
-        <option value="$PROJECT_DIR$/Templates/inc/answer.html" />
         <option value="$PROJECT_DIR$/Templates/base.html" />
         <option value="$PROJECT_DIR$/app/management/commands/SetCommentData.py" />
         <option value="$PROJECT_DIR$/app/management/commands/SetDislikeQuestionData.py" />
@@ -227,8 +215,9 @@
         <option value="$PROJECT_DIR$/app/management/commands/SetUserData.py" />
         <option value="$PROJECT_DIR$/app/models.py" />
         <option value="$PROJECT_DIR$/Templates/inc/rightSide.html" />
-        <option value="$PROJECT_DIR$/Templates/inc/question.html" />
         <option value="$PROJECT_DIR$/askme/settings.py" />
+        <option value="$PROJECT_DIR$/Templates/inc/question.html" />
+        <option value="$PROJECT_DIR$/Templates/inc/answer.html" />
       </list>
     </option>
   </component>
@@ -281,6 +270,11 @@
               <item name="StackOverFlow-Chernyi" type="b2602c69:ProjectViewProjectNode" />
               <item name="StackOverFlow-Chernyi" type="462c0819:PsiDirectoryNode" />
               <item name="askme" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="StackOverFlow-Chernyi" type="b2602c69:ProjectViewProjectNode" />
+              <item name="StackOverFlow-Chernyi" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="StackOverFlow-Chernyi" type="b2602c69:ProjectViewProjectNode" />
@@ -353,12 +347,12 @@
       <workItem from="1585940469142" duration="5116000" />
       <workItem from="1586019782985" duration="21174000" />
       <workItem from="1586121007428" duration="2162000" />
-      <workItem from="1586123795805" duration="40091000" />
+      <workItem from="1586123795805" duration="40886000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113490000" />
+    <option name="totallyTimeSpent" value="114285000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1623" y="-1080" width="1920" height="1080" extended-state="0" />
@@ -378,7 +372,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" sideWeight="0.49928468" weight="0.32891566" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50106496" side_tool="true" weight="0.17623763" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.9062947" weight="0.19702971" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.9062947" visible="true" weight="0.19702971" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49893504" weight="0.17623763" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -546,19 +540,6 @@
     <entry file="file://$PROJECT_DIR$/Templates/pic.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Templates/inc/answer.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="12" lean-forward="true" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="51" />
-          <folding>
-            <element signature="n#style#0;n#aside#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#a#2;n#!!top" expanded="true" />
-            <marker date="1586269618503" expanded="true" signature="980:1055" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/pic.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -700,10 +681,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/askme/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="659">
+          <caret line="126" column="1" lean-forward="true" selection-start-line="126" selection-start-column="1" selection-end-line="126" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Templates/inc/question.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="240">
+          <caret line="16" column="8" selection-start-line="16" selection-start-column="8" selection-end-line="18" selection-end-column="25" />
           <folding>
             <element signature="n#style#0;n#aside#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
@@ -712,10 +700,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/askme/settings.py">
+    <entry file="file://$PROJECT_DIR$/Templates/inc/answer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="843">
-          <caret line="123" lean-forward="true" selection-start-line="123" selection-end-line="123" />
+        <state relative-caret-position="284">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="n#style#0;n#aside#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#a#2;n#!!top" expanded="true" />
+            <marker date="1586280785668" expanded="true" signature="1024:1099" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
