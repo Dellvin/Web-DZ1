@@ -42,7 +42,7 @@ class Client(models.Model):
 
 
 class Tag(models.Model):
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=128, unique="true")
 
     rating = models.IntegerField(default=0)
     objects = TagManager()
