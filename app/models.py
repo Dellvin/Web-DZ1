@@ -31,9 +31,9 @@ class QuestionManager(models.Manager):
 
 
 class Client(models.Model):
-    login = models.CharField('login user', max_length=30)
+    login = models.CharField('login user', max_length=30, unique="true")
     password = models.CharField('password user', max_length=35)
-    email = models.CharField('email user', max_length=40)
+    email = models.CharField('email user', max_length=40, unique="true")
     rating = models.IntegerField('rating user')
     objects = UserManager()
 
