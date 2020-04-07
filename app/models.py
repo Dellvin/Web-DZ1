@@ -2,7 +2,7 @@ from django.db import models
 
 from django.utils import timezone
 from django.conf import settings
-
+from django.contrib.auth.models import User
 
 class UserManager(models.Manager):
     def best_members(self):
@@ -31,14 +31,15 @@ class QuestionManager(models.Manager):
 
 
 class Client(models.Model):
-    login = models.CharField('login user', max_length=30, unique="true")
-    password = models.CharField('password user', max_length=35)
-    email = models.CharField('email user', max_length=40, unique="true")
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
     rating = models.IntegerField('rating user')
     objects = UserManager()
 
     def __str__(self):
-        return self.login
+        return self.user.username
 
 
 class Tag(models.Model):
@@ -70,6 +71,7 @@ class Comment(models.Model):
     text = models.TextField('Text comment')
     rating = models.BigIntegerField(default=0)
     objects = CommentManager()
+    isRihtAnswer = models.BooleanField('it is true if author set this answer', default=0)
 
     def __str__(self):
         return self.text

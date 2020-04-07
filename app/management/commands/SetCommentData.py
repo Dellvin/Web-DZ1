@@ -18,8 +18,6 @@ class Command(BaseCommand):
         index = 1
         count = options['count']
         while index < count:
-
-
             max=randint(0, 10)
             for i in range(max):
                 profile = fake.profile()

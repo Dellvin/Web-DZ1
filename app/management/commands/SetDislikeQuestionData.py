@@ -26,5 +26,3 @@ class Command(BaseCommand):
                 likes.users.add(randint(1, 100))
 
             index += 1
-
-

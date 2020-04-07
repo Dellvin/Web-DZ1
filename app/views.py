@@ -17,7 +17,7 @@ questionsForTag = {
 
 
 def main(request):
-    contact_list = list(Question.objects.hot())  # list(questionsNum.objects.hot())
+    contact_list = Question.objects.hot()  # list(questionsNum.objects.hot())
     paginator = Paginator(contact_list, 5)  # По 2 на страницу
     tags=Tag.objects.best_tags()[0:10]
     users=Client.objects.best_members()[0:10]
@@ -83,7 +83,7 @@ def tagSearch(request, tag):
     users=Client.objects.best_members()[0:10]
     t = Tag.objects.filter(title=tag).first()
 
-    contact_list = list(t.question_set.all())  # list(questionsNum.objects.hot())
+    contact_list = t.question_set.all()  # list(questionsNum.objects.hot())
     paginator = Paginator(contact_list, 5)  # По 2 на страницу
 
     page = request.GET.get('page')
@@ -117,7 +117,7 @@ def settings(request):
 def newest(request):
     tags=Tag.objects.best_tags()[0:10]
     users=Client.objects.best_members()[0:10]
-    contact_list = list(Question.objects.newest())  # list(questionsNum.objects.hot())
+    contact_list = Question.objects.newest()  # list(questionsNum.objects.hot())
     paginator = Paginator(contact_list, 5)  # По 2 на страницу
 
     page = request.GET.get('page')

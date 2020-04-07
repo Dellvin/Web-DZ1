@@ -6,11 +6,13 @@ from faker import Faker
 
 from random import randint
 
+from django.contrib.auth.models import User
+
+
 class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--count', type=int)
-
 
     def handle(self, *args, **options):
         print("Creating users")
@@ -23,12 +25,14 @@ class Command(BaseCommand):
 
             username = profile['username']
             if username not in uniq:
-                user = Client(
-                    login=username,
-                    password=profile['username'],
-                    email=profile['mail'],
-                    rating=randint(0, 100)
+                u = User(username=username)
+                u.email = profile['mail']
+                u.password = profile['username']
+                u.save()
 
+                user = Client(
+                    user=u,
+                    rating=randint(0, 100)
                 )
                 user.save()
                 uniq.add(username)
