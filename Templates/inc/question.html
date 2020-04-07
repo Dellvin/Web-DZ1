@@ -35,7 +35,7 @@
 <a href="#">ЛАЙК</a>
 <a href="#" style="margin-left: 40px;">ДИЗЛАЙК</a>
 <a href="{% url 'question' qid=question.id %}" style="margin-left: 390px;">
-    answer(10)
+    answer({{question.comment_set.count}})
 </a>
 
 <br>
