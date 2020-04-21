@@ -25,10 +25,11 @@ class Command(BaseCommand):
 
             username = profile['username']
             if username not in uniq:
-                u = User(username=username)
-                u.email = profile['mail']
-                u.password = profile['username']
-                u.save()
+                u = User.objects.create_user(
+                    username=username,
+                    password=profile['mail'],
+                    email=profile['mail']
+                )
 
                 user = Client(
                     user=u,

@@ -15,10 +15,16 @@
                 </button>
             </form>
 
-            <a class="nav-link" href="{% url 'singIn' %}">Sign in</a>
-            <a class="nav-link" href="{% url 'singUp' %}" style="border-left-width: 1px;border-left-style: solid;">Sign
-                up</a>
-            <a class="nav-link" href="{% url 'settings' %}" style="border-left-width: 1px;border-left-style: solid;">Settings</a>
+            {%if request.user.is_authenticated%}
+                <a class="nav-link" href="{% url 'settings' %}">{{request.user.username}}</a>
+                <a class="nav-link" href="{% url 'logout' %}" style="border-left-width: 1px;border-left-style: solid;">Log out</a>
+            {%else%}
+                <a class="nav-link" href="{% url 'singIn' %}">Sign in</a>
+                <a class="nav-link" href="{% url 'singUp' %}" style="border-left-width: 1px;border-left-style: solid;">Sign up</a>
+            {%endif%}
+
+
+
             <a class="nav-link" href="{% url 'newQuestion' %}"
                style="border-left-width: 3px;border-left-style: solid;font-variation-settings: &quot;opsz&quot; 20, &quot;GRAD&quot; 433.1199951171875, &quot;YAXS&quot; 400;font-weight: 700;font-size: 25px;border-top-width: 3px;border-top-style: solid;border-bottom-width: 3px;border-bottom-style: solid;border-right-width: 3px;border-right-style: solid;margin-left: 50px;">ASK!</a>
         </ul>

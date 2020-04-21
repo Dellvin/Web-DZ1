@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -76,14 +77,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': 'mydb',
-    #     'USER': 'postgres',
-    #     'PASSWORD': '1538',
-    #     'HOST': 'localhost',
-    #     'PORT': '',
-    # }
 }
 
 # Password validation
@@ -125,3 +118,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+LOGIN_URL='/singIn/'
+

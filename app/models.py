@@ -32,10 +32,10 @@ class QuestionManager(models.Manager):
 
 class Client(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        User,
         on_delete=models.CASCADE,
     )
-    rating = models.IntegerField('rating user')
+    rating = models.IntegerField('rating user', default=0)
     objects = UserManager()
 
     def __str__(self):
@@ -43,7 +43,7 @@ class Client(models.Model):
 
 
 class Tag(models.Model):
-    title = models.CharField(max_length=128, unique="true")
+    title = models.CharField('Tag', max_length=128, unique="true")
 
     rating = models.IntegerField(default=0)
     objects = TagManager()
@@ -68,10 +68,10 @@ class Question(models.Model):
 class Comment(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)  # удаляет все комменты в случае удаления вопроса
     author = models.CharField('Author comment', max_length=50)
-    text = models.TextField('Text comment')
+    text = models.TextField('Add comment')
     rating = models.BigIntegerField(default=0)
     objects = CommentManager()
-    isRihtAnswer = models.BooleanField('it is true if author set this answer', default=0)
+    isRihtAnswer = models.BooleanField('it is true if author set this answer', default=0 )
 
     def __str__(self):
         return self.text

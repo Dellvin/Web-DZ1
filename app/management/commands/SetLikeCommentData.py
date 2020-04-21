@@ -17,13 +17,13 @@ class Command(BaseCommand):
         count = options['count']
         while index < count:
 
-            q = Question.objects.get(id=index)
-            for c in q.comment_set.all():
-                totalLikes = randint(0, 100)
-                likes = LikeComment(comment=c, likes=totalLikes)
-                likes.save()
-                for i in range(totalLikes):
-                    likes.users.add(randint(1, 100))
+            for q in Question.objects.all():
+                for c in q.comment_set.all():
+                    totalLikes = randint(0, 100)
+                    likes = LikeComment(comment=c, likes=totalLikes)
+                    likes.save()
+                    for i in range(totalLikes):
+                        likes.users.add(randint(1, 100))
 
             index += 1
 
