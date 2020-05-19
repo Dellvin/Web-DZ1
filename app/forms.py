@@ -2,7 +2,7 @@ from django import forms
 from app.models import Question, Tag, Client, Comment
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 class LoginForm(forms.Form):
@@ -14,6 +14,7 @@ class LoginForm(forms.Form):
         if ' ' in username:
             raise forms.ValidationError('username contains spaces(')
         return username
+
 
 class AnswerForm(forms.ModelForm):
     class Meta:
@@ -27,7 +28,7 @@ class AnswerForm(forms.ModelForm):
     def save(self, qid, commit=True):
         answer = Comment(text=self.cleaned_data['text'])
         answer.author = self.auhtor
-        answer.question=Question.objects.get(id=qid)
+        answer.question = Question.objects.get(id=qid)
         answer.dateTime = timezone.now()
         if commit:
             answer.save()
@@ -56,10 +57,12 @@ class QuestionForm(forms.ModelForm):
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
+    avatar = forms.ImageField(required=False)
 
     class Meta:
         model = User
-        fields = ("username", "email", 'password1', 'password2')
+
+        fields = ("username", "email", 'password1', 'password2', 'avatar')
 
     def save(self, commit=True):
         user = User.objects.create_user(
@@ -71,3 +74,29 @@ class RegistrationForm(UserCreationForm):
         user.save()
         client.save()
         return client
+
+
+class SettingsForm(UserChangeForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+        exclude = ['password1', 'password2', 'password']
+
+
+class SettingsAvatarForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['avatar']
+
+    def __init__(self, user, *args, **kwargs):
+        self.author=user
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        client=self.author.client
+        pic=self.cleaned_data['avatar']
+        client.avatar=pic
+        client.save()
+

@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
 
+
 class UserManager(models.Manager):
     def best_members(self):
         return self.order_by('-rating')
@@ -35,6 +36,7 @@ class Client(models.Model):
         User,
         on_delete=models.CASCADE,
     )
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name='Avatar')
     rating = models.IntegerField('rating user', default=0)
     objects = UserManager()
 
@@ -71,8 +73,8 @@ class Comment(models.Model):
     text = models.TextField('Add comment')
     rating = models.BigIntegerField(default=0)
     objects = CommentManager()
-    isRihtAnswer = models.BooleanField('it is true if author set this answer', default=0 )
-
+    isRihtAnswer = models.BooleanField('it is true if author set this answer', default=0)
+    user = models.ForeignKey(Client, on_delete=models.CASCADE, default=True)
     def __str__(self):
         return self.text
 

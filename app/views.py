@@ -1,13 +1,14 @@
 # coding=utf-8
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponseRedirect
+from django.contrib.auth.forms import PasswordChangeForm
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import auth
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from app.models import Question, Client, Comment, Tag, LikeQuestion, LikeComment, DisLikeQuestion, DisLikeComment
-from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
 from app import forms
+from app.forms import SettingsForm, SettingsAvatarForm
 
 questionsNum = {
     i: {'id': i, 'title': f'Question #{i}'}
@@ -48,9 +49,8 @@ def singin(request):
     else:
         form = forms.LoginForm(data=request.POST)
         if form.is_valid():
-            user = auth.authenticate(request, **form.cleaned_data)
-            if user is not None:
-                auth.login(request, user)
+            if request.user is not None:
+                auth.login(request, request.user)
                 next = request.POST.get('next', '/')
                 return HttpResponseRedirect(next)  # TODO нормальный редирект на предыдущую страницу
 
@@ -60,6 +60,7 @@ def singin(request):
         'tags': tags,
         'users': users,
         'form': form,
+        'errors': form.errors,
     })
 
 
@@ -83,6 +84,7 @@ def singup(request):
         'tags': tags,
         'users': users,
         'form': form,
+        'errors': form.errors,
     })
 
 
@@ -108,6 +110,7 @@ def newQuestion(request):
         'tags': tags,
         'users': users,
         'form': formQuestion,
+        'errors': formQuestion.errors,
     })
 
 
@@ -134,17 +137,71 @@ def tagSearch(request, tag):
         'questionsTag': questionsForTag.values(),
         'tags': tags,
         'users': users,
-        'flag': 1
+        'flag': 1,
     })
 
+
+# def settings(request):
+#     tags = Tag.objects.best_tags()[0:10]
+#     users = Client.objects.best_members()[0:10]
+#     return render(request, 'settings_page.html', {
+#         'tags': tags,
+#         'users': users,
+#         'user': request.user,
+#     })
 
 def settings(request):
-    tags = Tag.objects.best_tags()[0:10]
-    users = Client.objects.best_members()[0:10]
-    return render(request, 'settings_page.html', {
-        'tags': tags,
-        'users': users,
-    })
+    if request.method == 'POST':
+        form = SettingsForm(request.POST, instance=request.user)
+        formAv = SettingsAvatarForm(request.user, request.POST, request.FILES)
+        if formAv.is_valid():
+            formAv.save()
+        if form.is_valid():
+            form.save()
+            return redirect('/main/')
+        tags = Tag.objects.best_tags()[0:10]
+        users = Client.objects.best_members()[0:10]
+        return render(request, 'settings_page.html', {
+            'tags': tags,
+            'users': users,
+            'form': form,
+            'formAv': formAv,
+            'user': request.user,
+            'errors': form.errors,
+        })
+    else:
+        form = SettingsForm(instance=request.user)
+        formAv = SettingsAvatarForm(request.user)
+        tags = Tag.objects.best_tags()[0:10]
+        users = Client.objects.best_members()[0:10]
+        return render(request, 'settings_page.html', {
+            'tags': tags,
+            'users': users,
+            'form': form,
+            'formAv': formAv,
+            'user': request.user,
+            'errors': form.errors,
+        })
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('/settings/')
+        else:
+            return redirect('/change-password/')
+    else:
+        form = PasswordChangeForm(user=request.user)
+        tags = Tag.objects.best_tags()[0:10]
+        users = Client.objects.best_members()[0:10]
+        return render(request, 'change_password_page.html', {
+            'tags': tags,
+            'users': users,
+            'form': form,
+            'errors': form.errors,
+        })
 
 
 def newest(request):
@@ -197,6 +254,7 @@ def newQuestion(request):
         'tags': tags,
         'users': users,
         'form': formQuestion,
+        'errors': formQuestion.errors,
     })
 
 
@@ -215,10 +273,49 @@ def question(request, qid):
             'form': form,
         })
     else:
-        form = forms.AnswerForm(request.user.client, data=request.POST)
-        if form.is_valid():
-            form.save(qid)
-            redir = '/question/'
-            redir += str(qid)
-            redir += '/'
-            return redirect(redir)
+        url = addComment(request, qid)
+        if not request.user.is_anonymous:
+            return redirect(url)
+        return redirect('/singIn/')  # TODO нормальный редирект на страницу нового вопроса
+
+
+@login_required
+def addComment(request, qid):
+    form = forms.AnswerForm(request.user.client, data=request.POST)
+    if form.is_valid():
+        form.save(qid)
+        redir = '/question/'
+        redir += str(qid)
+        redir += '/'
+        return redir
+
+# @login_required_ajax
+# def addComment(request, qid):
+#     form = forms.AnswerForm(request.user.client, data=request.POST)
+#     if form.is_valid():
+#         comment=form.save(qid)
+#         return HttpResponseAjax(qid=comment.id)
+#     else:
+#         return HttpResponseAjaxError(
+#             code='bad_params',
+#             message=form.errors.as_text(),
+#         )
+
+
+def like(request):
+    if request.GET:
+        url=request.GET['qid']
+        return JsonResponse('ok')
+    else:
+        print("AJAX: "+request.POST['id']+"->"+request.POST['type'])
+        if(request.POST['type']=='q'):
+            q=Question.objects.get(id=request.POST['id'])
+            q.rating=q.rating+1
+            likeModel=q.likequestion_set.get(question=q)
+            likeModel.likes=likeModel.likes+1
+            q.save()
+            likeModel.save()
+
+            return JsonResponse({
+                'likes':q.rating,
+            })

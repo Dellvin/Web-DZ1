@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <!DOCTYPE html>
 <html lang="en"><head>
     <!-- Required meta tags FOR NAVBAR -->
@@ -9,7 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   </head>
 
@@ -37,28 +38,24 @@
 
 
 
-<main role="main" class="container">
-  <div class="row">
-    <div class="col-md-8 blog-main">
-<!--insert code here-->
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <!--insert code here-->
 
 
-<div class="my-3 p-3 bg-white rounded shadow-sm">
+                <div class="my-3 p-3 bg-white rounded shadow-sm">
 
+                    {% block content %}{% endblock content %}
 
+                </div>
 
+                {% include 'inc/rightSide.html' %}
 
+                <!-- /.container -->
+            </div>
+        </div>
+    </div>
 
-
-
-{% block content %}{% endblock content %}
-
-  </div>
-
-  {% include 'inc/rightSide.html' %}
-
-</main><!-- /.container -->
-
-
-
-
+{% block add_script %}
+    <script src={% static "Ajax/like.js" %}></script>
+{% endblock %}

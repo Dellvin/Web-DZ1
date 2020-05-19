@@ -26,10 +26,4 @@ class Command(BaseCommand):
             question.tags.add(randint(1, 100))
             index += 1
 
-# q=Question.objects.get(id=index)
-#                 comment=q.comment_set.create(
-#                     author=profile['username'],
-#                     text=fake.text(max_nb_chars=200, ext_word_list=None),
-#                     rating=randint(0, 100),
-#                 )
-#                 comment.save()
+
