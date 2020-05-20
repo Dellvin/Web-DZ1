@@ -37,10 +37,16 @@ function Like(id, type) {
         type: 'POST',
         data: {id: id, type: type},
         success: function (data) {
-            var doc = document.getElementById(type + id);
-            doc.textContent=data.likes+' рейтинг'
-
-        },
+            if (data.errors == "") {
+                var doc = document.getElementById(type + id);
+                doc.textContent = data.likes + ' рейтинг';
+            } else if (data.errors == "ALREADY_LIKED"){
+                alert('You have already liked this(')
+            }
+            else if(data.errors=="ANONYMOUS_USER"){
+                alert('Only authorized users can do that, please sign in or sign up');
+            }
+         },
         failure: function (data) {
             alert('error')
         }

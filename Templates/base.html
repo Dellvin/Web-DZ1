@@ -56,6 +56,14 @@
         </div>
     </div>
 
-{% block add_script %}
+{% block add_likes %}
     <script src={% static "Ajax/like.js" %}></script>
+{% endblock %}
+
+{% block add_dislikes %}
+    <script src={% static "Ajax/dislike.js" %}></script>
+{% endblock %}
+
+{% block set_right_answer %}
+    <script src={% static "Ajax/rightAnswer.js" %}></script>
 {% endblock %}

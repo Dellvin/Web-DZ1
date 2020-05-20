@@ -39,7 +39,7 @@
 
 <button onclick="Like({{ question.id }}, 'q')" class="btn-success" >Like</button>
 
-<button class="btn-danger" id="dislike_question" >Dislike</button>
+<button onclick="Dislike({{ question.id }}, 'q')" class="btn-danger" id="dislike_question" >Dislike</button>
 <a href="{% url 'question' qid=question.id %}" style="margin-left: 390px;">
     answer({{ question.comment_set.count }})
 </a>

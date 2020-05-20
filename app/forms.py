@@ -1,5 +1,5 @@
 from django import forms
-from app.models import Question, Tag, Client, Comment
+from app.models import Question, Tag, Client, Comment, LikeComment, LikeQuestion, DisLikeComment, DisLikeQuestion
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -30,8 +30,14 @@ class AnswerForm(forms.ModelForm):
         answer.author = self.auhtor
         answer.question = Question.objects.get(id=qid)
         answer.dateTime = timezone.now()
+
         if commit:
             answer.save()
+
+        like=LikeComment(comment=answer)
+        dis=DisLikeComment(comment=answer)
+        like.save()
+        dis.save()
         return answer
 
 
@@ -51,6 +57,10 @@ class QuestionForm(forms.ModelForm):
         if commit:
             question.save()
 
+        dis = DisLikeQuestion(question=question, dislikes=0)
+        like = LikeQuestion(question=question, likes=0)
+        dis.save()
+        like.save()
         question.tags.set(self.cleaned_data['tags'])
         return question
 
@@ -91,12 +101,11 @@ class SettingsAvatarForm(forms.ModelForm):
         fields = ['avatar']
 
     def __init__(self, user, *args, **kwargs):
-        self.author=user
+        self.author = user
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
-        client=self.author.client
-        pic=self.cleaned_data['avatar']
-        client.avatar=pic
+        client = self.author.client
+        pic = self.cleaned_data['avatar']
+        client.avatar = pic
         client.save()
-

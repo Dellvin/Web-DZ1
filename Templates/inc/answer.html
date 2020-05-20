@@ -3,21 +3,35 @@
 
 <br class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
 <h6 class="border-bottom border-gray pb-2 mb-0"></h6>
+
+
 {% if answer.question.author.user.username == request.user.username %}
-    <div class="form-check form-check-inline" style="background-color: yellow">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-        <label class="form-check-label" for="inlineCheckbox1">Right Answer</label>
-    </div>
-{% elif answer.isrightanswer %}
-    <div class="form-check form-check-inline" style="background-color:green">
-        <input class="form-check-input" type="checkbox" checked="checked" id="inlineCheckbox3" value="option3" disabled>
-        <label class="form-check-label" for="inlineCheckbox3">Author set this comment as an answer on question!</label>
-    </div>
+    {% if not answer.isRihtAnswer %}
+        <label id="A{{ answer.id }}+" class="form-check-label" for="inlineCheckbox3"
+               style="background-color: forestgreen"></label>
+        <button onclick="RightAnswer({{ answer.id }}, '+')" id="A{{ answer.id }}+b" class="btn-success">Right answer!
+        </button>
     {% else %}
-        <div class="form-check form-check-inline" style="background-color:brown">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="true" disabled>
-        <label class="form-check-label" for="inlineCheckbox3">Author has not set this comment as an answer on question yet(</label>
-    </div>
+        <label id="A{{ answer.id }}-" class="form-check-label" for="inlineCheckbox3"
+               style="background-color: forestgreen">You have already set it as right answer</label>
+        <button id="A{{ answer.id }}-b" onclick="RightAnswer({{ answer.id }}, '-')" class="btn-outline-danger">Wrong
+            answer!
+        </button>
+    {% endif %}
+
+{% else %}
+    {% if answer.isRihtAnswer %}
+        <div class="form-check form-check-inline" style="background-color:green;margin-top: 10px;">
+            <input class="form-check-input" type="checkbox" checked="checked" id="inlineCheckbox3" value="option3"
+                   disabled>
+
+        </div>
+    {% else %}
+        <div class="form-check form-check-inline" style="background-color:yellow;margin-top: 10px;">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="true" disabled>
+
+        </div>
+    {% endif %}
 {% endif %}
 <p>
 <div class="row">
@@ -30,10 +44,10 @@
 
         </strong>
         {% if answer.user.avatar %}
-        <img src="/media/{{ answer.user.avatar }}" height="70" width="70">
-    {% else %}
-        <img src="{% static 'pic.png' %}" height="70" width="70">
-    {% endif %}
+            <img src="/media/{{ answer.user.avatar }}" height="70" width="70">
+        {% else %}
+            <img src="{% static 'pic.png' %}" height="70" width="70">
+        {% endif %}
 
         <!--end of inserting code-->
 
@@ -49,16 +63,14 @@
 
 </div><!-- /.row -->
 <br>
-<div class="like_button_count">{{ answer.rating }} рейтинг ответа</div>
-<a href="https://example.com">ЛАЙК</a>
-<a href="https://example.com" style="margin-left: 35px;">ДИЗЛАЙК</a>
 
 
-<a>
-    <a style="margin-left: 150px;">
-        Tags: </a>
-    <!--<a href="https://example.com">kek</a> <a href="https://example.com">mem</a>-->
-</a>
+<div class="like_button_count" id="c{{ answer.id }}">{{ answer.rating }} рейтинг</div>
+
+<button onclick="Like({{ answer.id }}, 'c')" class="btn-outline-success">Like</button>
+
+<button onclick="Dislike({{ answer.id }}, 'c')" class="btn-outline-danger" id="dislike_question">Dislike</button>
+
 
 <br>
 </p>

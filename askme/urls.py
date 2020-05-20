@@ -17,7 +17,10 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('change-password/', views.change_password, name='change_password'),
 
+    # ajax
     path('like/', views.like, name='like'),
+    path('dislike/', views.dislike, name='dislike'),
+    path('rightAnswer/', views.rightAnswer, name='dislike'),
 ]
 
 if settings.DEBUG:

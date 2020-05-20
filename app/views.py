@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib import auth
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from app.models import Question, Client, Comment, Tag, LikeQuestion, LikeComment, DisLikeQuestion, DisLikeComment
+from app.models import Question, Client, Comment, Tag
 from django.contrib.auth import logout, update_session_auth_hash
 from app import forms
 from app.forms import SettingsForm, SettingsAvatarForm
@@ -51,8 +51,7 @@ def singin(request):
         if form.is_valid():
             if request.user is not None:
                 auth.login(request, request.user)
-                next = request.POST.get('next', '/')
-                return HttpResponseRedirect(next)  # TODO нормальный редирект на предыдущую страницу
+                return HttpResponseRedirect('/main/')  # TODO нормальный редирект на предыдущую страницу
 
     tags = Tag.objects.best_tags()[0:10]
     users = Client.objects.best_members()[0:10]
@@ -183,6 +182,7 @@ def settings(request):
             'errors': form.errors,
         })
 
+
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)
@@ -265,6 +265,7 @@ def question(request, qid):
         answers = quest.comment_set.all()
         tags = Tag.objects.best_tags()[0:10]
         users = Client.objects.best_members()[0:10]
+        print()
         return render(request, 'question_page.html', {
             'question': quest,
             'answers': answers,
@@ -273,8 +274,8 @@ def question(request, qid):
             'form': form,
         })
     else:
-        url = addComment(request, qid)
         if not request.user.is_anonymous:
+            url = addComment(request, qid)
             return redirect(url)
         return redirect('/singIn/')  # TODO нормальный редирект на страницу нового вопроса
 
@@ -288,6 +289,7 @@ def addComment(request, qid):
         redir += str(qid)
         redir += '/'
         return redir
+
 
 # @login_required_ajax
 # def addComment(request, qid):
@@ -304,18 +306,147 @@ def addComment(request, qid):
 
 def like(request):
     if request.GET:
-        url=request.GET['qid']
+        url = request.GET['qid']
         return JsonResponse('ok')
     else:
-        print("AJAX: "+request.POST['id']+"->"+request.POST['type'])
-        if(request.POST['type']=='q'):
-            q=Question.objects.get(id=request.POST['id'])
-            q.rating=q.rating+1
-            likeModel=q.likequestion_set.get(question=q)
-            likeModel.likes=likeModel.likes+1
+        if request.user.is_anonymous:
+            return JsonResponse({
+                'errors': 'ANONYMOUS_USER',
+            })
+        print("AJAX: " + request.POST['id'] + "->" + request.POST['type'])
+        if (request.POST['type'] == 'q'):
+            q = Question.objects.get(id=request.POST['id'])
+            likeModel = q.likequestion_set.get(question=q)
+            for client in likeModel.users.all():
+                if client.user.username == request.user.username:
+                    return JsonResponse({
+                        'likes': "",
+                        'errors': 'ALREADY_LIKED',
+                    })
+
+            dislikeModel = q.dislikequestion_set.get(question=q)
+
+            for client in dislikeModel.users.all():
+                if client.user.username == request.user.username:
+                    dislikeModel.users.remove(client)
+
+            print(likeModel.users.all())
+            q.rating = q.rating + 1
+            likeModel.likes = likeModel.likes + 1
+            likeModel.users.add(request.user.client)
             q.save()
             likeModel.save()
 
             return JsonResponse({
-                'likes':q.rating,
+                'likes': q.rating,
+                'errors': '',
             })
+        if request.POST['type'] == 'c':
+            answer = Comment.objects.get(id=request.POST['id'])
+            likeModel = answer.likecomment_set.get(comment=answer)
+            for client in likeModel.users.all():
+                if client.user.username == request.user.username:
+                    return JsonResponse({
+                        'likes': "",
+                        'errors': 'ALREADY_LIKED',
+                    })
+            dislikeModel = answer.dislikecomment_set.get(comment=answer)
+            for dis in dislikeModel.users.all():
+                if dis.user.username == request.user.username:
+                    dislikeModel.users.remove(dis)
+            print(likeModel.users.all())
+            answer.rating = answer.rating + 1
+            likeModel.likes = likeModel.likes + 1
+            likeModel.users.add(request.user.client)
+            answer.save()
+            likeModel.save()
+            return JsonResponse({
+                'likes': answer.rating,
+                'errors': '',
+            })
+
+
+def dislike(request):
+    if request.GET:
+        url = request.GET['qid']
+        return JsonResponse('ok')
+    else:
+        if request.user.is_anonymous:
+            return JsonResponse({
+                'errors': 'ANONYMOUS_USER',
+            })
+        print("AJAX: " + request.POST['id'] + "->" + request.POST['type'])
+        if (request.POST['type'] == 'q'):
+            q = Question.objects.get(id=request.POST['id'])
+            dislikeModel = q.dislikequestion_set.get(question=q)
+            for client in dislikeModel.users.all():
+                if client.user.username == request.user.username:
+                    return JsonResponse({
+                        'likes': "",
+                        'errors': 'ALREADY_DISLIKED',
+                    })
+            likeModel = q.likequestion_set.get(question=q)
+            for client in likeModel.users.all():
+                if client.user.username == request.user.username:
+                    likeModel.users.remove(client)
+
+            print(dislikeModel.users.all())
+            q.rating = q.rating - 1
+            dislikeModel.likes = dislikeModel.dislikes + 1
+            dislikeModel.users.add(request.user.client)
+            q.save()
+            dislikeModel.save()
+
+            return JsonResponse({
+                'likes': q.rating,
+                'errors': '',
+            })
+        if request.POST['type'] == 'c':
+            q = Comment.objects.get(id=request.POST['id'])
+            dislikeModel = q.dislikecomment_set.get(comment=q)
+            for client in dislikeModel.users.all():
+                if client.user.username == request.user.username:
+                    return JsonResponse({
+                        'likes': "",
+                        'errors': 'ALREADY_DISLIKED',
+                    })
+
+            likeModel = q.likecomment_set.get(comment=q)
+            for like in likeModel.users.all():
+                if like.user.username == request.user.username:
+                    likeModel.users.remove(like)
+            print(dislikeModel.users.all())
+            q.rating = q.rating - 1
+            dislikeModel.likes = dislikeModel.dislikes + 1
+            dislikeModel.users.add(request.user.client)
+            q.save()
+            dislikeModel.save()
+            return JsonResponse({
+                'likes': q.rating,
+                'errors': '',
+            })
+
+
+def rightAnswer(request):
+    if request.GET:
+        return JsonResponse('ok')
+    else:
+        if request.user.is_anonymous:
+            return JsonResponse({
+                'errors': 'ANONYMOUS_USER',
+            })
+
+        print("AJAX: " + request.POST['id'] + "->" + request.POST['type'])
+
+        answer = Comment.objects.get(id=request.POST['id'])
+        make = True
+        if answer.isRihtAnswer == True:
+            answer.isRihtAnswer = False
+        else:
+            answer.isRihtAnswer = True
+            make = False
+        answer.save()
+        return JsonResponse({
+            'makeit': make,
+            'errors': '',
+        })
