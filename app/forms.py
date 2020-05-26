@@ -67,12 +67,11 @@ class QuestionForm(forms.ModelForm):
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    avatar = forms.ImageField(required=False)
 
     class Meta:
         model = User
 
-        fields = ("username", "email", 'password1', 'password2', 'avatar')
+        fields = ("username", "email", 'password1', 'password2')
 
     def save(self, commit=True):
         user = User.objects.create_user(
@@ -95,7 +94,7 @@ class SettingsForm(UserChangeForm):
         exclude = ['password1', 'password2', 'password']
 
 
-class SettingsAvatarForm(forms.ModelForm):
+class AvatarForm(forms.ModelForm):
     class Meta:
         model = Client
         fields = ['avatar']

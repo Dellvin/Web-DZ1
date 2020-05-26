@@ -2,14 +2,19 @@
 
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load static%}
 
 {% block content %}
-  <form class="form mt-5" method="POST" novalidate>
+  <form class="form mt-5" method="POST" novalidate enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
+  {% bootstrap_form formAv %}
     {% buttons %}
         <button type="submit" class="btn btn-primary">Login</button>
     <input type="hidden" name="next" value="{{ request.path }}">
     {% endbuttons %}
+
+
+
   </form>
 {% endblock content %}

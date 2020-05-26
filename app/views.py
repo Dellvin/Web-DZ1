@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from app.models import Question, Client, Comment, Tag
 from django.contrib.auth import logout, update_session_auth_hash
 from app import forms
-from app.forms import SettingsForm, SettingsAvatarForm
+from app.forms import SettingsForm, AvatarForm
 
 questionsNum = {
     i: {'id': i, 'title': f'Question #{i}'}
@@ -64,9 +64,7 @@ def singin(request):
 
 
 def singup(request):
-    if request.method == 'GET':
-        form = forms.RegistrationForm
-    else:
+    if request.method == 'POST':
         form = forms.RegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
@@ -74,8 +72,13 @@ def singup(request):
             user = auth.authenticate(username=data['username'], password=data['password1'])
             if user is not None:
                 auth.login(request, user)
-                next = request.POST.get('next', '/')
-                return redirect('/main/')  # TODO нормальный редирект на предыдущую страницу
+                formAv = AvatarForm(request.user, request.POST, request.FILES)
+                if formAv.is_valid():
+                    formAv.save()
+                return redirect('/main/')
+    if request.method == 'GET':
+        form = forms.RegistrationForm
+    formAv = AvatarForm(request.user)
 
     tags = Tag.objects.best_tags()[0:10]
     users = Client.objects.best_members()[0:10]
@@ -83,8 +86,46 @@ def singup(request):
         'tags': tags,
         'users': users,
         'form': form,
+        'formAv': formAv,
+        'user': request.user,
         'errors': form.errors,
     })
+
+
+
+def settings(request):
+    if request.method == 'POST':
+        form = SettingsForm(request.POST, instance=request.user)
+        formAv = AvatarForm(request.user, request.POST, request.FILES)
+        if formAv.is_valid():
+            formAv.save()
+        if form.is_valid():
+            form.save()
+            return redirect('/main/')
+        tags = Tag.objects.best_tags()[0:10]
+        users = Client.objects.best_members()[0:10]
+        return render(request, 'settings_page.html', {
+            'tags': tags,
+            'users': users,
+            'form': form,
+            'formAv': formAv,
+            'user': request.user,
+            'errors': form.errors,
+        })
+    else:
+        form = SettingsForm(instance=request.user)
+        formAv = AvatarForm(request.user)
+        tags = Tag.objects.best_tags()[0:10]
+        users = Client.objects.best_members()[0:10]
+        return render(request, 'settings_page.html', {
+            'tags': tags,
+            'users': users,
+            'form': form,
+            'formAv': formAv,
+            'user': request.user,
+            'errors': form.errors,
+        })
+
 
 
 @login_required
@@ -102,7 +143,7 @@ def newQuestion(request):
     if formQuestion.is_valid():
         question = formQuestion.save()
         return redirect(
-            reverse('question', kwargs={'qid': question.pk}))  # TODO нормальный редирект на страницу нового вопроса
+            reverse('question', kwargs={'qid': question.pk}))
     tags = Tag.objects.best_tags()[0:10]
     users = Client.objects.best_members()[0:10]
     return render(request, 'new_question_page.html', {
@@ -148,39 +189,6 @@ def tagSearch(request, tag):
 #         'users': users,
 #         'user': request.user,
 #     })
-
-def settings(request):
-    if request.method == 'POST':
-        form = SettingsForm(request.POST, instance=request.user)
-        formAv = SettingsAvatarForm(request.user, request.POST, request.FILES)
-        if formAv.is_valid():
-            formAv.save()
-        if form.is_valid():
-            form.save()
-            return redirect('/main/')
-        tags = Tag.objects.best_tags()[0:10]
-        users = Client.objects.best_members()[0:10]
-        return render(request, 'settings_page.html', {
-            'tags': tags,
-            'users': users,
-            'form': form,
-            'formAv': formAv,
-            'user': request.user,
-            'errors': form.errors,
-        })
-    else:
-        form = SettingsForm(instance=request.user)
-        formAv = SettingsAvatarForm(request.user)
-        tags = Tag.objects.best_tags()[0:10]
-        users = Client.objects.best_members()[0:10]
-        return render(request, 'settings_page.html', {
-            'tags': tags,
-            'users': users,
-            'form': form,
-            'formAv': formAv,
-            'user': request.user,
-            'errors': form.errors,
-        })
 
 
 def change_password(request):
@@ -277,7 +285,7 @@ def question(request, qid):
         if not request.user.is_anonymous:
             url = addComment(request, qid)
             return redirect(url)
-        return redirect('/singIn/')  # TODO нормальный редирект на страницу нового вопроса
+        return redirect('/singIn/')
 
 
 @login_required
