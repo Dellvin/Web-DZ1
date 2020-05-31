@@ -34,8 +34,8 @@ class AnswerForm(forms.ModelForm):
         if commit:
             answer.save()
 
-        like=LikeComment(comment=answer)
-        dis=DisLikeComment(comment=answer)
+        like = LikeComment(comment=answer)
+        dis = DisLikeComment(comment=answer)
         like.save()
         dis.save()
         return answer
@@ -108,3 +108,13 @@ class AvatarForm(forms.ModelForm):
         pic = self.cleaned_data['avatar']
         client.avatar = pic
         client.save()
+
+
+class AjaxForm(forms.Form):
+    idQuestion = forms.IntegerField
+
+    def clean_username(self):
+        ID = self.cleaned_data['idQuestion']
+        if not ID.is_integer():
+            raise forms.ValidationError('id is not integer')
+        return ID

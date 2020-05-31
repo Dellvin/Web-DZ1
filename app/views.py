@@ -8,7 +8,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from app.models import Question, Client, Comment, Tag
 from django.contrib.auth import logout, update_session_auth_hash
 from app import forms
-from app.forms import SettingsForm, AvatarForm
+from app.forms import SettingsForm, AvatarForm, AjaxForm
+from django.db import transaction, IntegrityError
 
 questionsNum = {
     i: {'id': i, 'title': f'Question #{i}'}
@@ -321,6 +322,11 @@ def like(request):
             return JsonResponse({
                 'errors': 'ANONYMOUS_USER',
             })
+        aj = AjaxForm(request.POST['id'])
+        if not aj.is_valid():
+            return JsonResponse({
+                'errors': 'ID_ERROR',
+            })
         print("AJAX: " + request.POST['id'] + "->" + request.POST['type'])
         if (request.POST['type'] == 'q'):
             q = Question.objects.get(id=request.POST['id'])
@@ -366,14 +372,21 @@ def like(request):
             answer.rating = answer.rating + 1
             likeModel.likes = likeModel.likes + 1
             likeModel.users.add(request.user.client)
+
             answer.save()
-            likeModel.save()
+            sid=transaction.savepoint()
+            try:
+                likeModel.save()  # Could throw exception
+                transaction.savepoint_commit(sid)
+            except IntegrityError:
+                transaction.savepoint_rollback(sid)
+
             return JsonResponse({
                 'likes': answer.rating,
                 'errors': '',
             })
 
-
+@transaction.atomic
 def dislike(request):
     if request.GET:
         url = request.GET['qid']
@@ -383,8 +396,14 @@ def dislike(request):
             return JsonResponse({
                 'errors': 'ANONYMOUS_USER',
             })
+        aj = AjaxForm(request.POST['id'])
+        if not aj.is_valid():
+            return JsonResponse({
+                'errors': 'ID_ERROR',
+            })
         print("AJAX: " + request.POST['id'] + "->" + request.POST['type'])
         if (request.POST['type'] == 'q'):
+
             q = Question.objects.get(id=request.POST['id'])
             dislikeModel = q.dislikequestion_set.get(question=q)
             for client in dislikeModel.users.all():
@@ -403,7 +422,12 @@ def dislike(request):
             dislikeModel.likes = dislikeModel.dislikes + 1
             dislikeModel.users.add(request.user.client)
             q.save()
-            dislikeModel.save()
+            sid=transaction.savepoint()
+            try:
+                dislikeModel.save()  # Could throw exception
+                transaction.savepoint_commit(sid)
+            except IntegrityError:
+                transaction.savepoint_rollback(sid)
 
             return JsonResponse({
                 'likes': q.rating,
@@ -428,7 +452,13 @@ def dislike(request):
             dislikeModel.likes = dislikeModel.dislikes + 1
             dislikeModel.users.add(request.user.client)
             q.save()
-            dislikeModel.save()
+            sid = transaction.savepoint()
+            try:
+                dislikeModel.save()  # Could throw exception
+                transaction.savepoint_commit(sid)
+            except IntegrityError:
+                transaction.savepoint_rollback(sid)
+
             return JsonResponse({
                 'likes': q.rating,
                 'errors': '',
@@ -443,8 +473,14 @@ def rightAnswer(request):
             return JsonResponse({
                 'errors': 'ANONYMOUS_USER',
             })
-
+        aj = AjaxForm(request.POST['id'])
+        if not aj.is_valid():
+            return JsonResponse({
+                'errors': 'ID_ERROR',
+            })
         print("AJAX: " + request.POST['id'] + "->" + request.POST['type'])
+
+
 
         answer = Comment.objects.get(id=request.POST['id'])
         make = True
